@@ -42,21 +42,22 @@ public abstract class VLexer {
 	}
 
 	// 传入的是修改前光标的位置
-	public final void onInsertChars(int i, int len) {
-		int part = findPart(i);
+	public final void onInsertChars(int pos, int len) {
+		if (len == 0) return;
+		int part = findPart(pos);
 		this.P = DS[part];
-		int en = DE[part];
-		if (DS[0] != part && DS[part + 1] == DE[part]) // 前后两个part相连
-			en = DE[part + 1];
+		int en = DE[part] + len;
+		//if (DS[0] != part && DS[part + 1] == DE[part]) // 前后两个part相连
+		//	en = DE[part + 1] + len;
 		int afterLen = DS[0] - part;
 		short[] afterD = new short[afterLen];
 		int[] afterDS = new int[afterLen];
 		int[] afterDE = new int[afterLen];
 		if (afterLen != 0) {
 			System.arraycopy(D, part + 1, afterD, 0, afterLen);
-			for (int j = 0; j < afterLen; j++) {
-				afterDS[i] = DS[part + j + 1] + len;
-				afterDE[i] = DE[part + j + 1] + len;
+			for (int i = 0; i < afterLen; i++) {
+				afterDS[i] = DS[part + i + 1] + len;
+				afterDE[i] = DE[part + i + 1] + len;
 			}
 		}
 		DS[0] = part - 1;
@@ -70,6 +71,47 @@ public abstract class VLexer {
 			DE[DS[0]] = P;
 		}
 		if (afterLen != 0) {
+			int nl = DS[0] + afterLen + 1;
+			while (D.length < nl) expandDArray();
+			System.arraycopy(afterD, 0, D, DS[0] + 1, afterLen);
+			System.arraycopy(afterDS, 0, DS, DS[0] + 1, afterLen);
+			System.arraycopy(afterDE, 0, DE, DS[0] + 1, afterLen);
+			DS[0] += afterLen;
+		}
+	}
+	
+	public final void onDeleteChars(int pos, int len) {
+		if (len > pos) len = pos;
+		int part2 = findPart(pos);
+		int en = DE[part2] - len;
+		pos -= len;
+		int part1 = findPart(pos);
+		if (part1 != 1) part1--;
+		this.P = DS[part1];
+		int afterLen = DS[0] - part2;
+		short[] afterD = new short[afterLen];
+		int[] afterDS = new int[afterLen];
+		int[] afterDE = new int[afterLen];
+		if (afterLen != 0) {
+			System.arraycopy(D, part2 + 1, afterD, 0, afterLen);
+			for (int i = 0; i < afterLen; i++) {
+				afterDS[i] = DS[part2 + i + 1] - len;
+				afterDE[i] = DE[part2 + i + 1] - len;
+			}
+		}
+		DS[0] = part1 - 1;
+		short type;
+		while (this.P < en) {
+			type = getNext();
+			if (++DS[0] == D.length)
+				expandDArray();
+			D[DS[0]] = type;
+			DS[DS[0]] = ST;
+			DE[DS[0]] = P;
+		}
+		if (afterLen != 0) {
+			int nl = DS[0] + afterLen + 1;
+			while (D.length < nl) expandDArray();
 			System.arraycopy(afterD, 0, D, DS[0] + 1, afterLen);
 			System.arraycopy(afterDS, 0, DS, DS[0] + 1, afterLen);
 			System.arraycopy(afterDE, 0, DE, DS[0] + 1, afterLen);
@@ -232,6 +274,7 @@ public abstract class VLexer {
 	}
 
 	protected final boolean equals(int st, int en, String s) {
+		if (en - st != s.length()) return false;
 		for (int i = st; i < en; i++)
 			if (S[i] != s.charAt(i - st)) return false;
 		return true;
