@@ -17,14 +17,11 @@ public abstract class VLexer {
 	protected int L;
 
 	public VLexer() {
-		this(new char[0]);
 	}
 
 	// Notice that we don't copy the array here for higher speed
 	public VLexer(char[] s) {
-		this.S = s;
-		this.P = this.DS[0] = 0;
-		L = s.length;
+		setText(s);
 	}
 
 	public abstract Trie getKeywordTrie();
@@ -39,6 +36,16 @@ public abstract class VLexer {
 
 	public final void setTextLength(int len) {
 		this.L = len;
+	}
+
+	public final void copyFrom(VLexer a) {
+		this.S = a.S;
+		this.P = a.P;
+		this.ST = a.ST;
+		this.D = a.D;
+		this.DS = a.DS;
+		this.DE = a.DE;
+		this.L = a.L;
 	}
 
 	// 传入的是修改前光标的位置
@@ -79,7 +86,7 @@ public abstract class VLexer {
 			DS[0] += afterLen;
 		}
 	}
-	
+
 	public final void onDeleteChars(int pos, int len) {
 		if (len > pos) len = pos;
 		int part2 = findPart(pos);
@@ -196,19 +203,6 @@ public abstract class VLexer {
 		this.P = this.DS[0] = 0;
 	}
 
-	public final void parseAll() {
-		// D[0]是个short，不能用作tot啊啊啊！
-		if (DS[0] != 0) return;
-		short type;
-		while ((type = getNext()) != TYPE_EOF) {
-			if (++DS[0] == D.length)
-				expandDArray();
-			D[DS[0]] = type;
-			DS[DS[0]] = ST;
-			DE[DS[0]] = P;
-		}
-	}
-
 	private void expandDArray() {
 		short[] nd = new short[D.length + EXPAND_SIZE];
 		System.arraycopy(D, 0, nd, 0, D.length);
@@ -227,6 +221,14 @@ public abstract class VLexer {
 	public final void setText(char[] cs) {
 		this.S = cs;
 		this.P = this.DS[0] = 0;
+		short type;
+		while ((type = getNext()) != TYPE_EOF) {
+			if (++DS[0] == D.length)
+				expandDArray();
+			D[DS[0]] = type;
+			DS[DS[0]] = ST;
+			DE[DS[0]] = P;
+		}
 	}
 
 	private short getNext() {

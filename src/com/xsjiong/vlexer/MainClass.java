@@ -8,7 +8,6 @@ public class MainClass {
 
 	public static void main(String[] args) {
 		lexer = new VJavaLexer(S);
-		lexer.parseAll();
 		for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
 		insertString(1, ".");
@@ -33,7 +32,7 @@ public class MainClass {
 		lexer.onTextReferenceUpdate(S, S.length);
 		lexer.onInsertChars(i, s.length());
 	}
-	
+
 	private static void deleteString(int i, int len) {
 		if (len > i) len = i;
 		char[] ns = new char[S.length - len];
