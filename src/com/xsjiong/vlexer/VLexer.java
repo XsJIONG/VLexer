@@ -221,6 +221,7 @@ public abstract class VLexer {
 	public final void setText(char[] cs) {
 		this.S = cs;
 		this.P = this.DS[0] = 0;
+		this.L = cs.length;
 		short type;
 		while ((type = getNext()) != TYPE_EOF) {
 			if (++DS[0] == D.length)
