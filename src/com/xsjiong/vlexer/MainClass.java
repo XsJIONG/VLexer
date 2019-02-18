@@ -1,14 +1,17 @@
 package com.xsjiong.vlexer;
 
-import java.util.Arrays;
-
 public class MainClass {
-	private static char[] S = "this.".toCharArray();
+	private static char[] S = "this//*/ qwe qwe jiaosd".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
 		lexer = new VJavaLexer(S);
+		System.out.println(lexer.getPartCount());
+		insertString(5, "*");
+		deleteString(6, 1);
 		for (int i = 1; i <= lexer.getPartCount(); i++)
+			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
+		/*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
 		insertString(1, ".");
 		deleteString(2, 2);
@@ -16,7 +19,7 @@ public class MainClass {
 		for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
 		System.out.println(Arrays.toString(lexer.getPartStarts()));
-		System.out.println(Arrays.toString(lexer.getPartEnds()));
+		System.out.println(Arrays.toString(lexer.getPartEnds()));*/
 	}
 
 	private static void insertString(int i, String s) {
