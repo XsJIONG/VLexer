@@ -1,19 +1,15 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = "this;\n qwe qwe jiaosd".toCharArray();
+	private static char[] S = G.D.toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
 		lexer = new VJavaLexer(S);
+		insertString(19249, "/*");
+		deleteString(19432, 1);
 		printState();
-		insertString(5, "/*");
-		printState();
-		deleteString(7, 1);
-		printState();
-		deleteString(6, 1);
-		printState();
-		/*for (int i = 1; i <= lexer.getPartCount(); i++)
+		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
 		insertString(1, ".");
 		deleteString(2, 2);
@@ -21,7 +17,7 @@ public class MainClass {
 		for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
 		System.out.println(Arrays.toString(lexer.getPartStarts()));
-		System.out.println(Arrays.toString(lexer.getPartEnds()));*/
+		System.out.println(Arrays.toString(lexer.getPartStarts()));*/
 	}
 
 	private static void printState() {
