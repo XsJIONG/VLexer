@@ -1,13 +1,11 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = G.D.toCharArray();
+	private static char[] S = ".e".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
 		lexer = new VJavaLexer(S);
-		insertString(19249, "/*");
-		deleteString(19432, 1);
 		printState();
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
