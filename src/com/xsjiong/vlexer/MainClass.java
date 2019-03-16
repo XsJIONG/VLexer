@@ -1,12 +1,17 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = ".e".toCharArray();
+	private static char[] S = "Load Failed".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
 		lexer = new VJavaLexer(S);
 		printState();
+		deleteString(S.length, 7);
+		printState();
+		deleteString(S.length, 4);
+		printState();
+		insertString(S.length, "Loa");
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
 		insertString(1, ".");
