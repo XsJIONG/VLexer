@@ -13,6 +13,13 @@ public class VCLexer extends VCommonLexer {
 		return KEYWORD_TRIE;
 	}
 
+	public VCLexer() {
+	}
+
+	public VCLexer(char[] cs) {
+		super(cs);
+	}
+
 	@Override
 	protected short getWordType(int st, int en) {
 		if (isKeyword(S, st, P)) return TYPE_KEYWORD;
@@ -39,8 +46,9 @@ public class VCLexer extends VCommonLexer {
 	public short specialJudge() {
 		if (S[P] == '#' && isStartOfLine(P)) {
 			do {
-
-			}
+				++P;
+			} while (P != L && S[P] != '\n');
+			return TYPE_PREPROCESSOR_COMMAND;
 		}
 		return super.specialJudge();
 	}

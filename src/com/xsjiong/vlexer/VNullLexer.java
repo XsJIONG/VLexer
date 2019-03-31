@@ -7,4 +7,16 @@ public class VNullLexer extends VLexer {
 		P = L;
 		return VLexer.UNRESOLVED_TYPE;
 	}
+
+	@Override
+	protected boolean isWhitespace(char c) {
+		return false;
+	}
+
+	public VNullLexer() {
+	}
+
+	public VNullLexer(char[] cs) {
+		super(cs);
+	}
 }

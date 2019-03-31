@@ -5,7 +5,7 @@ public class MainClass {
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
-		lexer = new VCLexer(S);
+		lexer = new VCppLexer(S);
 		printState();
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
