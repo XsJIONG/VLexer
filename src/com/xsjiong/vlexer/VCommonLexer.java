@@ -65,10 +65,6 @@ public abstract class VCommonLexer extends VLexer {
 		return getKeywordTrie().hasWord(cs, st, en);
 	}
 
-	protected final void ReadSpaces() {
-		while (P != L && isWhitespace(S[P])) ++P;
-	}
-
 	protected abstract short getWordType(int st, int en);
 
 	public abstract Trie getKeywordTrie();
@@ -157,34 +153,14 @@ public abstract class VCommonLexer extends VLexer {
 				}
 			}
 			case '"': {
-				boolean z = false;
-				do {
-					if (S[P] == '\n') return TYPE_STRING;
-					if (P == L) return TYPE_STRING;
-					if (S[P] == '\\')
-						z = !z;
-					else if (S[P] == '"' && !z) {
-						++P;
-						return TYPE_STRING;
-					} else if (z) z = false;
-					++P;
-				} while (true);
+				readString('"');
+				return TYPE_STRING;
 			}
 			case '\'': {
 				// 尽管单引号里面只允许有一个字符，但考虑到转义（我懒得写判断了）和用户异常遍及，我还是把它当作里面可以放n个字符吧
 				// 以及...最好只parse一行
-				boolean z = false;
-				do {
-					if (S[P] == '\n') return TYPE_CHAR;
-					if (P == L) return TYPE_CHAR;
-					if (S[P] == '\\')
-						z = !z;
-					else if (S[P] == '\'' && !z) {
-						++P;
-						return TYPE_CHAR;
-					} else if (z) z = false;
-					++P;
-				} while (true);
+				readString('\'');
+				return TYPE_CHAR;
 			}
 			case '=': {
 				if (P == L) return TYPE_ASSIGNMENT;
