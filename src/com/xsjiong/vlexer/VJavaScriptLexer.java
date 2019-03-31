@@ -22,11 +22,12 @@ public class VJavaScriptLexer extends VJavaLexer {
 	}
 
 	@Override
-	public short ProcessSymbol(char c) {
+	public short processSymbol(char c) {
 		if (c == '\'') {
 			// JS的世界里没有char
 			boolean z = false;
 			do {
+				if (S[P] == '\n') return TYPE_STRING;
 				if (P == L) return TYPE_STRING;
 				if (S[P] == '\\')
 					z = !z;
@@ -37,6 +38,8 @@ public class VJavaScriptLexer extends VJavaLexer {
 				++P;
 			} while (true);
 		}
-		return super.ProcessSymbol(c);
+		if (c == '=' && S[P] == '>') // =>
+			return TYPE_OPERATOR;
+		return super.processSymbol(c);
 	}
 }
