@@ -149,10 +149,6 @@ public abstract class VLexer {
 		this.L = len;
 	}
 
-	public final int getPartCount() {
-		return DS[0];
-	}
-
 	public final int findPart(int pos) {
 		int l = 1, r = DS[0];
 		int mid;
@@ -166,23 +162,10 @@ public abstract class VLexer {
 		return r;
 	}
 
-	// Start With 1!!!!!!!!!!!
-	public final short getPartType(int ind) {
-		return D[ind];
-	}
-
-	public final int getPartStart(int ind) {
+	/*public final int getPartStart(int ind) {
 		if (ind > DS[0]) return Integer.MAX_VALUE;
 		return DS[ind];
-	}
-
-	public final short[] getParts() {
-		return D;
-	}
-
-	public final int[] getPartStarts() {
-		return DS;
-	}
+	}*/
 
 	public final String getText() {
 		return new String(S);
