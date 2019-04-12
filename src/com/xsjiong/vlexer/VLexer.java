@@ -9,12 +9,11 @@ public abstract class VLexer {
 			TYPE_NULL = 9, TYPE_LEFT_PARENTHESIS = 10, TYPE_RIGHT_PARENTHESIS = 11, TYPE_LEFT_SQUARE_BRACKET = 12, TYPE_RIGHT_SQUARE_BRACKET = 13, TYPE_LEFT_BRACE = 14, TYPE_RIGHT_BRACE = 15, TYPE_SEMICOLON = 16,
 			TYPE_COLON = 17, TYPE_PERIOD = 18, TYPE_COMMA = 19, FAILED = -1;
 
-	protected char[] S;
-	protected int P, ST;
-	protected short[] D = new short[EXPAND_SIZE + 1];
-	protected int[] DS = new int[EXPAND_SIZE + 1];
-	protected int[] DE = new int[EXPAND_SIZE + 1];
-	protected int L;
+	public char[] S;
+	public int P, ST;
+	public short[] D = new short[EXPAND_SIZE + 1];
+	public int[] DS = new int[EXPAND_SIZE + 1];
+	public int L;
 
 	public VLexer() {
 	}
@@ -30,7 +29,6 @@ public abstract class VLexer {
 		this.ST = a.ST;
 		this.D = a.D;
 		this.DS = a.DS;
-		this.DE = a.DE;
 		this.L = a.L;
 	}
 
@@ -75,10 +73,8 @@ public abstract class VLexer {
 		int[] afterDE = new int[afterLen];
 		if (afterLen != 0) {
 			System.arraycopy(D, part + 1, afterD, 0, afterLen);
-			for (int i = 0; i < afterLen; i++) {
+			for (int i = 0; i < afterLen; i++)
 				afterDS[i] = DS[part + i + 1] + len;
-				afterDE[i] = DE[part + i + 1] + len;
-			}
 		}
 		DS[0] = Math.max(part - 1, 0);
 		short type;
@@ -91,7 +87,6 @@ public abstract class VLexer {
 				expandDArray();
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
-			DE[DS[0]] = P;
 			if (P == L) return;
 			while (i != afterLen && P > afterDE[i]) i++;
 			if (i != afterLen && ST == afterDS[i] && P == afterDE[i] && type == afterD[i]) break;
@@ -102,7 +97,6 @@ public abstract class VLexer {
 			while (D.length < nl) expandDArray();
 			System.arraycopy(afterD, i, D, DS[0], cplen);
 			System.arraycopy(afterDS, i, DS, DS[0], cplen);
-			System.arraycopy(afterDE, i, DE, DS[0], cplen);
 			DS[0] = nl;
 		}
 	}
@@ -122,10 +116,8 @@ public abstract class VLexer {
 		int[] afterDE = new int[afterLen];
 		if (afterLen != 0) {
 			System.arraycopy(D, part2 + 1, afterD, 0, afterLen);
-			for (int i = 0; i < afterLen; i++) {
+			for (int i = 0; i < afterLen; i++)
 				afterDS[i] = DS[part2 + i + 1] - len;
-				afterDE[i] = DE[part2 + i + 1] - len;
-			}
 		}
 		DS[0] = part1 - 1;
 		int i = 0;
@@ -138,7 +130,6 @@ public abstract class VLexer {
 				expandDArray();
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
-			DE[DS[0]] = P;
 			if (P == L) return;
 			while (i != afterLen && P > afterDE[i]) i++;
 			if (i != afterLen && ST == afterDS[i] && P == afterDE[i] && type == afterD[i]) break;
@@ -149,7 +140,6 @@ public abstract class VLexer {
 			while (D.length < nl) expandDArray();
 			System.arraycopy(afterD, i, D, DS[0], cplen);
 			System.arraycopy(afterDS, i, DS, DS[0], cplen);
-			System.arraycopy(afterDE, i, DE, DS[0], cplen);
 			DS[0] = nl;
 		}
 	}
@@ -186,28 +176,12 @@ public abstract class VLexer {
 		return DS[ind];
 	}
 
-	public final int getPartEnd(int ind) {
-		return DE[ind];
-	}
-
-	public final String getPartText(int ind) {
-		return getText(DS[ind], DE[ind]);
-	}
-
-	public final char[] getPartChars(int ind) {
-		return getChars(DS[ind], DE[ind]);
-	}
-
 	public final short[] getParts() {
 		return D;
 	}
 
 	public final int[] getPartStarts() {
 		return DS;
-	}
-
-	public final int[] getPartEnds() {
-		return DE;
 	}
 
 	public final String getText() {
@@ -240,9 +214,6 @@ public abstract class VLexer {
 		int[] nd2 = new int[D.length];
 		System.arraycopy(DS, 0, nd2, 0, DS.length);
 		DS = nd2;
-		nd2 = new int[D.length];
-		System.arraycopy(DE, 0, nd2, 0, DE.length);
-		DE = nd2;
 		nd2 = null;
 		System.gc();
 	}
@@ -261,7 +232,6 @@ public abstract class VLexer {
 				expandDArray();
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
-			DE[DS[0]] = P;
 		}
 	}
 
