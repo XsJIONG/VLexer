@@ -64,7 +64,7 @@ public abstract class VLexer {
 		}
 		int part = findPart(pos);
 		if (pos == DS[part]) part--;
-		if (part == 0) part = 1;
+		if (part == 0) return;
 		this.P = Math.min(DS[part], pos);
 //		int en = DE[part] + len;
 		int afterLen = DS[0] - part;
@@ -108,7 +108,7 @@ public abstract class VLexer {
 		pos -= len;
 		int part1 = findPart(pos);
 		if (pos == DS[part1]) part1--;
-		if (part1 == 0) part1 = 1;
+		if (part1 == 0) return; // MARK HERE
 		this.P = Math.min(DS[part1], pos);
 		int afterLen = DS[0] - part2;
 		short[] afterD = new short[afterLen];
