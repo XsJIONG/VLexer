@@ -19,8 +19,8 @@ public class MainClass {
 	}
 
 	private static void printState() {
-		for (int i = 1; i <= lexer.getPartCount(); i++)
-			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
+		for (int i = 1; i <= lexer.DS[0]; i++)
+			System.out.println(lexer.getTypeName(lexer.D[i]));
 		System.out.println("============");
 	}
 
