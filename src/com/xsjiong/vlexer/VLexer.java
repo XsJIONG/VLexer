@@ -14,13 +14,27 @@ public abstract class VLexer {
 	public short[] D = new short[EXPAND_SIZE + 1];
 	public int[] DS = new int[EXPAND_SIZE + 1];
 	public int L;
+	private boolean _AutoParse = true;
+	private boolean _Parsed = false;
 
 	public VLexer() {
 	}
 
-	// Notice that we don't copy the array here for higher speed
-	public VLexer(char[] s) {
-		setText(s);
+	public final void setAutoParse(boolean flag) {
+		if (_AutoParse = flag)
+			parseAll();
+	}
+
+	public final boolean isAutoParse() {
+		return _AutoParse;
+	}
+
+	public final boolean isParsed() {
+		return _Parsed;
+	}
+
+	public final void ensureParsed() {
+		if (!_Parsed) parseAll();
 	}
 
 	public final void copyFrom(VLexer a) {
@@ -144,6 +158,20 @@ public abstract class VLexer {
 		}
 	}
 
+	public final void setText(char[] cs) {
+		setText(cs, cs.length);
+	}
+
+	public final void setText(char[] cs, int len) {
+		onTextReferenceUpdate(cs, len);
+		_Parsed = false;
+		if (_AutoParse) parseAll();
+	}
+
+	public final void onTextReferenceUpdate(char[] cs) {
+		onTextReferenceUpdate(cs, cs.length);
+	}
+
 	public final void onTextReferenceUpdate(char[] cs, int len) {
 		this.S = cs;
 		this.L = len;
@@ -201,14 +229,9 @@ public abstract class VLexer {
 		System.gc();
 	}
 
-	public final void setText(char[] cs) {
-		this.S = cs;
-		this.L = cs.length;
-		parseAll();
-	}
-
-	private void parseAll() {
+	public void parseAll() {
 		this.P = this.DS[0] = 0;
+		if (S == null) return;
 		short type;
 		while ((type = getNext()) != TYPE_EOF) {
 			if (++DS[0] == D.length)
@@ -216,6 +239,7 @@ public abstract class VLexer {
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
 		}
+		_Parsed = true;
 	}
 
 	protected abstract short getNext();
