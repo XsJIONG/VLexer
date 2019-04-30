@@ -230,6 +230,7 @@ public abstract class VLexer {
 	}
 
 	public void parseAll() {
+		if (_Parsed) return;
 		this.P = this.DS[0] = 0;
 		if (S == null) return;
 		short type;
