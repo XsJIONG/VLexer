@@ -103,11 +103,13 @@ public abstract class VLexer {
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
 			if (P == L) return;
-			while (i != afterLen && P >= afterDS[i]) i++;
-			if (i != afterLen) {
-				i--;
-				if (ST == afterDS[i] && type == afterD[i]) break;
+			if (i != afterLen && P >= afterDS[i]) {
+				do {
+					i++;
+				} while (i != afterLen && P >= afterDS[i]);
+				if (i != afterLen) i--;
 			}
+			if (i != afterLen) if (ST == afterDS[i] && type == afterD[i]) break;
 		}
 		if (afterLen != 0) {
 			int cplen = afterLen - i;
@@ -150,11 +152,13 @@ public abstract class VLexer {
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
 			if (P == L) return;
-			while (i != afterLen && P >= afterDS[i]) i++;
-			if (i != afterLen) {
-				i--;
-				if (ST == afterDS[i] && type == afterD[i]) break;
+			if (i != afterLen && P >= afterDS[i]) {
+				do {
+					i++;
+				} while (i != afterLen && P >= afterDS[i]);
+				if (i != afterLen) i--;
 			}
+			if (i != afterLen) if (ST == afterDS[i] && type == afterD[i]) break;
 		}
 		if (afterLen != 0) {
 			int cplen = afterLen - i;
@@ -186,6 +190,7 @@ public abstract class VLexer {
 	}
 
 	public final int findPart(int pos) {
+		if (pos == 0) return 1;
 		int l = 1, r = DS[0];
 		int mid;
 		while (l <= r) {

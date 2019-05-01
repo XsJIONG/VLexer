@@ -1,19 +1,14 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = "package xx.xx.xx;\n\nimport a.b.c;\nimport d.e.f;".toCharArray();
+	private static char[] S = "package xx.xx.xx;public static class".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
 		lexer = new VJavaLexer();
 		lexer.setText(S);
 		printState();
-		deleteString(17, 17);
-		System.out.println(S);
-		printState();
-		insertString(0, "\n\n\n");
-		printState();
-		deleteString(3, 3);
+		insertString(17, "\nnew");
 		System.out.println(S);
 		printState();
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
