@@ -17,10 +17,6 @@ public class VJavaScriptLexer extends VJavaLexer {
 	public VJavaScriptLexer() {
 	}
 
-	public VJavaScriptLexer(char[] cs) {
-		super(cs);
-	}
-
 	@Override
 	public short processSymbol(char c) {
 		if (c == '\'') {

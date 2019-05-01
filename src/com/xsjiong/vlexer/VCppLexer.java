@@ -16,8 +16,4 @@ public class VCppLexer extends VCLexer {
 
 	public VCppLexer() {
 	}
-
-	public VCppLexer(char[] cs) {
-		super(cs);
-	}
 }

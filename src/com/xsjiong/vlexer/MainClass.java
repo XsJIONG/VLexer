@@ -1,11 +1,15 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = "#include <iostream>".toCharArray();
+	private static char[] S = "package \n\n//qwjeioqwjieojqwoiejwq".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
-		lexer = new VCppLexer(S);
+		lexer = new VJavaLexer();
+		lexer.setText(S);
+		printState();
+		deleteString(7, 7);
+		System.out.println(S);
 		printState();
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
@@ -20,7 +24,7 @@ public class MainClass {
 
 	private static void printState() {
 		for (int i = 1; i <= lexer.DS[0]; i++)
-			System.out.println(lexer.getTypeName(lexer.D[i]));
+			System.out.println(lexer.getTypeName(lexer.D[i]) + ":" + lexer.DS[i]);
 		System.out.println("============");
 	}
 

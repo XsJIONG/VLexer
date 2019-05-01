@@ -4,10 +4,6 @@ public abstract class VCommonLexer extends VLexer {
 	public VCommonLexer() {
 	}
 
-	public VCommonLexer(char[] s) {
-		super(s);
-	}
-
 	protected short getNext() {
 		ReadSpaces();
 		if (P == L) return TYPE_EOF;

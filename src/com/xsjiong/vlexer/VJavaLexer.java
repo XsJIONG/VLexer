@@ -29,10 +29,6 @@ public class VJavaLexer extends VCommonLexer {
 	public VJavaLexer() {
 	}
 
-	public VJavaLexer(char[] cs) {
-		super(cs);
-	}
-
 	@Override
 	protected short getWordType(int st, int en) {
 		if (isKeyword(S, st, P)) return TYPE_KEYWORD;
