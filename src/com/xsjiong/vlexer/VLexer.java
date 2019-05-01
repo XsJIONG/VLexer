@@ -78,13 +78,15 @@ public abstract class VLexer {
 		}
 		int part = findPart(pos);
 //		if (pos == DS[part]) part--;
-		if (part <= 0) return;
+		if (part <= 0) {
+			for (int i = 1; i <= DS[0]; i++) DS[i] += len;
+			return;
+		}
 		this.P = Math.min(DS[part], pos);
 //		int en = DE[part] + len;
 		int afterLen = DS[0] - part;
 		short[] afterD = new short[afterLen];
 		int[] afterDS = new int[afterLen];
-		int[] afterDE = new int[afterLen];
 		if (afterLen != 0) {
 			System.arraycopy(D, part + 1, afterD, 0, afterLen);
 			for (int i = 0; i < afterLen; i++)
@@ -93,7 +95,6 @@ public abstract class VLexer {
 		DS[0] = Math.max(part - 1, 0);
 		short type;
 		int i = 0;
-//		while (this.P < en) {
 		while (true) {
 			type = getNext();
 			if (type == TYPE_EOF) break;
@@ -102,8 +103,11 @@ public abstract class VLexer {
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
 			if (P == L) return;
-			while (i != afterLen && P > afterDE[i]) i++;
-			if (i != afterLen && ST == afterDS[i] && P == afterDE[i] && type == afterD[i]) break;
+			while (i != afterLen && P >= afterDS[i]) i++;
+			if (i != afterLen) {
+				i--;
+				if (ST == afterDS[i] && type == afterD[i]) break;
+			}
 		}
 		if (afterLen != 0) {
 			int cplen = afterLen - i;
@@ -122,12 +126,14 @@ public abstract class VLexer {
 		pos -= len;
 		int part1 = findPart(pos);
 //		if (pos == DS[part1]) part1--;
-		if (part1 <= 0) return; // MARK HERE
+		if (part2 <= 0) {
+			for (int i = 1; i <= DS[0]; i++) DS[i] -= len;
+			return;
+		}
 		this.P = Math.min(DS[part1], pos);
 		int afterLen = DS[0] - part2;
 		short[] afterD = new short[afterLen];
 		int[] afterDS = new int[afterLen];
-		int[] afterDE = new int[afterLen];
 		if (afterLen != 0) {
 			System.arraycopy(D, part2 + 1, afterD, 0, afterLen);
 			for (int i = 0; i < afterLen; i++)
@@ -136,7 +142,6 @@ public abstract class VLexer {
 		DS[0] = part1 - 1;
 		int i = 0;
 		short type;
-//		while (this.P < en) {
 		while (true) {
 			type = getNext();
 			if (type == TYPE_EOF) break;
@@ -145,8 +150,11 @@ public abstract class VLexer {
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
 			if (P == L) return;
-			while (i != afterLen && P > afterDE[i]) i++;
-			if (i != afterLen && ST == afterDS[i] && P == afterDE[i] && type == afterD[i]) break;
+			while (i != afterLen && P >= afterDS[i]) i++;
+			if (i != afterLen) {
+				i--;
+				if (ST == afterDS[i] && type == afterD[i]) break;
+			}
 		}
 		if (afterLen != 0) {
 			int cplen = afterLen - i;
@@ -276,6 +284,14 @@ public abstract class VLexer {
 			pos--;
 		}
 		return true;
+	}
+
+	public final String getStateString() {
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 1; i <= DS[0]; i++)
+			buffer.append(getTypeName(D[i])).append(':').append(DS[i]).append('\n');
+		if (buffer.length() != 0) buffer.deleteCharAt(buffer.length() - 1);
+		return buffer.toString();
 	}
 
 	public static class Trie {
