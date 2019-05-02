@@ -1,6 +1,7 @@
 package com.xsjiong.vlexer;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public abstract class VLexer {
 	public static final int EXPAND_SIZE = 128;
@@ -299,6 +300,11 @@ public abstract class VLexer {
 		return buffer.toString();
 	}
 
+	public final String[] queryKeywords(char[] cs, int st, int en) {
+		if (!(this instanceof VCommonLexer)) return new String[0];
+		return ((VCommonLexer) this).getKeywordTrie().queryWords(cs, st, en);
+	}
+
 	public static class Trie {
 		private final short[][] C;
 		private final boolean[] L;
@@ -337,6 +343,33 @@ public abstract class VLexer {
 				if ((cur = C[cur][c]) == 0) return false;
 			}
 			return L[cur];
+		}
+
+		public String[] queryWords(char[] cs, int st, int en) {
+			final String[] EMPTY = new String[0];
+
+			byte c;
+			int cur = 0;
+			for (int i = st; i < en; i++) {
+				c = (byte) (cs[i] - 'a');
+				if (c < 0 || c >= 26) return EMPTY;
+				if ((cur = C[cur][c]) == 0) return EMPTY;
+			}
+			StringBuffer full = new StringBuffer();
+			full.append(cs, st, en - st);
+			ArrayList<String> ret = new ArrayList<>();
+			listWords(full, cur, ret);
+			return ret.toArray(EMPTY);
+		}
+
+		private void listWords(StringBuffer full, int node, ArrayList<String> str) {
+			if (L[node]) str.add(full.toString());
+			for (char c = 0; c < 26; c++) {
+				if (C[node][c] == 0) continue;
+				full.append((char) (c + 'a'));
+				listWords(full, C[node][c], str);
+				full.deleteCharAt(full.length() - 1);
+			}
 		}
 	}
 }

@@ -1,16 +1,16 @@
 package com.xsjiong.vlexer;
 
+import java.util.Arrays;
+
 public class MainClass {
 	private static char[] S = "package xx.xx.xx;public static class".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
 		lexer = new VJavaLexer();
-		lexer.setText(S);
-		printState();
-		insertString(17, "\nnew");
-		System.out.println(S);
-		printState();
+		System.out.println(Arrays.toString(
+				lexer.queryKeywords("pub".toCharArray(), 0, 3)
+		));
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
 		insertString(1, ".");
