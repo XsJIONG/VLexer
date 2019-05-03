@@ -77,7 +77,7 @@ public abstract class VLexer {
 			parseAll();
 			return;
 		}
-		int part = findPart(pos);
+		int part = findPart(Math.max(pos - 1, 0));
 //		if (pos == DS[part]) part--;
 		if (part <= 0) {
 			for (int i = 1; i <= DS[0]; i++) DS[i] += len;
