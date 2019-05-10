@@ -127,7 +127,7 @@ public abstract class VLexer {
 		int part2 = findPart(pos);
 //		int en = DE[part2] - len;
 		pos -= len;
-		int part1 = findPart(pos);
+		int part1 = findPart(Math.max(pos - 1, 0));
 //		if (pos == DS[part1]) part1--;
 		if (part2 <= 0) {
 			for (int i = 1; i <= DS[0]; i++) DS[i] -= len;
@@ -188,6 +188,7 @@ public abstract class VLexer {
 	public final void onTextReferenceUpdate(char[] cs, int len) {
 		this.S = cs;
 		this.L = len;
+		_Parsed = false;
 	}
 
 	public final int findPart(int pos) {
