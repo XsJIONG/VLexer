@@ -1,19 +1,15 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = "break".toCharArray();
+	private static char[] S = "\n".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
 		lexer = new VJavaLexer();
 		lexer.setText(S);
 		printState();
-		insertString(1, "/");
-		printState();
-		insertString(2, "/");
-		printState();
-		deleteString(3, 2);
-		System.out.println(S);
+		insertString(0, "/");
+		insertString(1, "/2333");
 		printState();
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
