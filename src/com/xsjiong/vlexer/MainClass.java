@@ -1,7 +1,7 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = " <qwe>q</qwe >e</qwe>".toCharArray();
+	private static char[] S = " <!doctype html>q</qwe >e</qwe>".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {

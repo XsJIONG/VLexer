@@ -57,7 +57,9 @@ public class VXMLLexer extends VCommonLexer {
 									return TYPE_COMMENT;
 								}
 							}
-							return TYPE_TAG_START;
+							while (P != L && S[P] != '>') P++;
+							if (P != L) P++;
+							return TYPE_CDATA;
 						case '/':
 							if (P == L) return TYPE_TAG_END;
 							do P++;
