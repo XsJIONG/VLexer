@@ -4,36 +4,29 @@ public abstract class VCommonLexer extends VLexer {
 	public VCommonLexer() {
 	}
 
-	protected short getNext() {
+	protected byte getNext() {
 		if (P == L) return TYPE_EOF;
 		ST = P;
-		if (S[P] == ' ') {
-			do {
-				++P;
-			} while (P != L && S[P] == ' ');
-			return TYPE_BLANKS;
-		}
-		if (S[P] == '\t') {
-			do {
-				++P;
-			} while (P != L && S[P] == '\t');
-			return TYPE_TABS;
-		}
+		if (S[P] == ' ' || S[P] == '\t') ReadSpaces();
 		if (isIdentifierStart(S[P])) {
 			int st = P;
-			do {
-				++P;
-			} while (P != L && isIdentifierPart(S[P]));
+			ReadIdentifier();
 			return getWordType(st, P);
 		}
-		short type = specialJudge();
+		byte type = specialJudge();
 		if (type != FAILED) return type;
 		return processSymbol(S[P++]);
 	}
 
+	protected void ReadIdentifier() {
+		do {
+			++P;
+		} while (P != L && isIdentifierPart(S[P]));
+	}
+
 	// Overrideable
 	// Special judge for stuffs such as numbers or #statement in C
-	public short specialJudge() {
+	public byte specialJudge() {
 		if (Character.isDigit(S[P]) || S[P] == '.' || S[P] == '-' || S[P] == '+') {
 			boolean hex = false;
 			do {
@@ -72,7 +65,7 @@ public abstract class VCommonLexer extends VLexer {
 		return getKeywordTrie().hasWord(cs, st, en);
 	}
 
-	protected abstract short getWordType(int st, int en);
+	protected abstract byte getWordType(int st, int en);
 
 	public abstract Trie getKeywordTrie();
 
@@ -80,7 +73,7 @@ public abstract class VCommonLexer extends VLexer {
 
 	protected abstract boolean isIdentifierPart(char c);
 
-	public short processSymbol(char c) {
+	public byte processSymbol(char c) {
 		switch (c) {
 			// 有 ## 或者 #= 用法的运算符
 			case '|':

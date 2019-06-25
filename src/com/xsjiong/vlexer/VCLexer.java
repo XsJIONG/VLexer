@@ -17,7 +17,7 @@ public class VCLexer extends VCommonLexer {
 	}
 
 	@Override
-	protected short getWordType(int st, int en) {
+	protected byte getWordType(int st, int en) {
 		if (isKeyword(S, st, P)) return TYPE_KEYWORD;
 		// No bool in C!!!!
 		return TYPE_IDENTIFIER;
@@ -39,7 +39,7 @@ public class VCLexer extends VCommonLexer {
 	}
 
 	@Override
-	public short specialJudge() {
+	public byte specialJudge() {
 		if (S[P] == '#' && isStartOfLine(P)) {
 			do {
 				++P;

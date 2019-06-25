@@ -5,14 +5,14 @@ import java.util.ArrayList;
 
 public abstract class VLexer {
 	public static final int EXPAND_SIZE = 128;
-	public static final int TOTAL_COUNT = 28;
-	public static final short TYPE_TABS = 27, TYPE_BLANKS = 26, TYPE_TAG_END = 25, TYPE_TAG_START = 24, TYPE_SIMPLE_TAG = 23, TYPE_PREPROCESSOR_COMMAND = 22, UNRESOLVED_TYPE = 21, TYPE_EOF = 20, TYPE_IDENTIFIER = 0, TYPE_KEYWORD = 1, TYPE_NUMBER = 2, TYPE_COMMENT = 3, TYPE_STRING = 4, TYPE_CHAR = 5, TYPE_OPERATOR = 6, TYPE_BOOLEAN = 7, TYPE_ASSIGNMENT = 8,
+	public static final int TOTAL_COUNT = 27;
+	public static final byte TYPE_CONTENT = 26, TYPE_TAG_END = 25, TYPE_TAG_START = 24, TYPE_CONTENT_START = 23, TYPE_PREPROCESSOR_COMMAND = 22, UNRESOLVED_TYPE = 21, TYPE_EOF = 20, TYPE_IDENTIFIER = 0, TYPE_KEYWORD = 1, TYPE_NUMBER = 2, TYPE_COMMENT = 3, TYPE_STRING = 4, TYPE_CHAR = 5, TYPE_OPERATOR = 6, TYPE_BOOLEAN = 7, TYPE_ASSIGNMENT = 8,
 			TYPE_NULL = 9, TYPE_LEFT_PARENTHESIS = 10, TYPE_RIGHT_PARENTHESIS = 11, TYPE_LEFT_SQUARE_BRACKET = 12, TYPE_RIGHT_SQUARE_BRACKET = 13, TYPE_LEFT_BRACE = 14, TYPE_RIGHT_BRACE = 15, TYPE_SEMICOLON = 16,
 			TYPE_COLON = 17, TYPE_PERIOD = 18, TYPE_COMMA = 19, FAILED = -1;
 
 	public char[] S;
 	public int P, ST;
-	public short[] D = new short[EXPAND_SIZE + 1];
+	public byte[] D = new byte[EXPAND_SIZE + 1];
 	public int[] DS = new int[EXPAND_SIZE + 1];
 	public int L;
 	private boolean _AutoParse = true;
@@ -86,7 +86,7 @@ public abstract class VLexer {
 		this.P = Math.min(DS[part], pos);
 //		int en = DE[part] + len;
 		int afterLen = Math.max(DS[0] - part, 0);
-		short[] afterD = new short[afterLen];
+		byte[] afterD = new byte[afterLen];
 		int[] afterDS = new int[afterLen];
 		if (afterLen != 0) {
 			System.arraycopy(D, part + 1, afterD, 0, afterLen);
@@ -94,7 +94,7 @@ public abstract class VLexer {
 				afterDS[i] = DS[part + i + 1] + len;
 		}
 		DS[0] = Math.max(part - 1, 0);
-		short type;
+		byte type;
 		int i = 0;
 		while (true) {
 			type = getNext();
@@ -135,7 +135,7 @@ public abstract class VLexer {
 		}
 		this.P = Math.min(DS[part1], pos);
 		int afterLen = Math.max(DS[0] - part2, 0);
-		short[] afterD = new short[afterLen];
+		byte[] afterD = new byte[afterLen];
 		int[] afterDS = new int[afterLen];
 		if (afterLen != 0) {
 			System.arraycopy(D, part2 + 1, afterD, 0, afterLen);
@@ -144,7 +144,7 @@ public abstract class VLexer {
 		}
 		DS[0] = part1 - 1;
 		int i = 0;
-		short type;
+		byte type;
 		while (true) {
 			type = getNext();
 			if (type == TYPE_EOF) break;
@@ -233,7 +233,7 @@ public abstract class VLexer {
 	}
 
 	private void expandDArray() {
-		short[] nd = new short[D.length + EXPAND_SIZE];
+		byte[] nd = new byte[D.length + EXPAND_SIZE];
 		System.arraycopy(D, 0, nd, 0, D.length);
 		D = nd;
 		nd = null;
@@ -248,22 +248,23 @@ public abstract class VLexer {
 		if (_Parsed) return;
 		this.P = this.DS[0] = 0;
 		if (S == null) return;
-		short type;
+		byte type;
 		while ((type = getNext()) != TYPE_EOF) {
-			if (++DS[0] == D.length)
-				expandDArray();
+			if (++DS[0] == D.length) expandDArray();
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
 		}
+		if (DS[0] + 1 == D.length) expandDArray();
+		DS[DS[0] + 1] = L;
 		_Parsed = true;
 	}
 
-	protected abstract short getNext();
+	protected abstract byte getNext();
 
-	public String getTypeName(short type) {
+	public String getTypeName(byte type) {
 		try {
 			for (Field one : this.getClass().getFields())
-				if (one.getType() == short.class && one.getShort(null) == type) return one.getName();
+				if (one.getType() == byte.class && one.getByte(null) == type) return one.getName();
 			return null;
 		} catch (Throwable t) {
 			return null;

@@ -30,7 +30,7 @@ public class VJavaLexer extends VCommonLexer {
 	}
 
 	@Override
-	protected short getWordType(int st, int en) {
+	protected byte getWordType(int st, int en) {
 		if (isKeyword(S, st, P)) return TYPE_KEYWORD;
 		else if (equals(st, P, "true") || equals(st, P, "false")) return TYPE_BOOLEAN;
 		else if (equals(st, P, "null")) return TYPE_NULL;
@@ -43,7 +43,7 @@ public class VJavaLexer extends VCommonLexer {
 	}
 
 	@Override
-	public short processSymbol(char c) {
+	public byte processSymbol(char c) {
 		// 我大Java的 >>> 和 >>>=
 		if (c == '>') {
 			if (P == L) return TYPE_OPERATOR;

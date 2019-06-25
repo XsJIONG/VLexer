@@ -1,12 +1,14 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = "  \t\tqwe".toCharArray();
+	private static char[] S = " <qwe>q</qwe >e</qwe>".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
-		lexer = new VJavaLexer();
+		lexer = new VXMLLexer();
 		lexer.setText(S);
+		printState();
+		deleteString(13, 1);
 		printState();
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
@@ -20,8 +22,12 @@ public class MainClass {
 	}
 
 	private static void printState() {
-		for (int i = 1; i <= lexer.DS[0]; i++)
-			System.out.println(lexer.getTypeName(lexer.D[i]) + ":" + lexer.DS[i]);
+		int t;
+		for (int i = 1; i <= lexer.DS[0]; i++) {
+			if (i == lexer.DS[0]) t = lexer.L;
+			else t = lexer.DS[i + 1];
+			System.out.println(lexer.getTypeName(lexer.D[i]) + ":" + new String(S, lexer.DS[i], t - lexer.DS[i]));
+		}
 		System.out.println("============");
 	}
 

@@ -18,7 +18,7 @@ public class VJavaScriptLexer extends VJavaLexer {
 	}
 
 	@Override
-	public short processSymbol(char c) {
+	public byte processSymbol(char c) {
 		if (c == '\'') {
 			// JS的世界里没有char
 			boolean z = false;
