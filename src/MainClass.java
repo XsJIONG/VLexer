@@ -1,4 +1,5 @@
-package com.xsjiong.vlexer;
+import com.xsjiong.vlexer.VJavaLexer;
+import com.xsjiong.vlexer.VLexer;
 
 public class MainClass {
 	private static char[] S = "public static                      ".toCharArray();

@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VLexer">
+    <output-path>$PROJECT_DIR$/../../Library</output-path>
+    <root id="archive" name="VLexer.jar">
+      <element id="directory" name="com">
+        <element id="dir-copy" path="$PROJECT_DIR$/out/production/VLexer/com" />
+      </element>
+    </root>
+  </artifact>
+</component>
