@@ -8,6 +8,7 @@ public abstract class VCommonLexer extends VLexer {
 		if (P == L) return TYPE_EOF;
 		ST = P;
 		if (S[P] == ' ' || S[P] == '\t') ReadSpaces();
+		if (P == L) return TYPE_EOF;
 		if (isIdentifierStart(S[P])) {
 			int st = P;
 			ReadIdentifier();

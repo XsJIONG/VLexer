@@ -340,6 +340,7 @@ public abstract class VLexer {
 			byte c;
 			int cur = 0;
 			for (int i = st; i < en; i++) {
+				if (cs[i] < 'a' || cs[i] > 'z') return false;
 				c = (byte) (cs[i] - 'a');
 				if (c < 0 || c >= 26) return false;
 				if ((cur = C[cur][c]) == 0) return false;
@@ -353,6 +354,7 @@ public abstract class VLexer {
 			byte c;
 			int cur = 0;
 			for (int i = st; i < en; i++) {
+				if (cs[i] < 'a' || cs[i] > 'z') return EMPTY;
 				c = (byte) (cs[i] - 'a');
 				if (c < 0 || c >= 26) return EMPTY;
 				if ((cur = C[cur][c]) == 0) return EMPTY;

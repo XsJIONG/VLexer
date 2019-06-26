@@ -1,14 +1,12 @@
 package com.xsjiong.vlexer;
 
 public class MainClass {
-	private static char[] S = " <!doctype html>q</qwe >e</qwe>".toCharArray();
+	private static char[] S = "public static                      ".toCharArray();
 	private static VLexer lexer;
 
 	public static void main(String[] args) {
-		lexer = new VXMLLexer();
+		lexer = new VJavaLexer();
 		lexer.setText(S);
-		printState();
-		deleteString(13, 1);
 		printState();
 		 /*for (int i = 1; i <= lexer.getPartCount(); i++)
 			System.out.println(lexer.getTypeName(lexer.getPartType(i)) + ":" + lexer.getPartText(i));
