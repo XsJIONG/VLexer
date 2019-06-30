@@ -3,9 +3,9 @@ package com.xsjiong.vlexer;
 public class VNullLexer extends VLexer {
 	@Override
 	protected byte getNext() {
-		if (P == L) return VLexer.TYPE_EOF;
+		if (P == L) return VLexer.EOF;
 		P = L;
-		return VLexer.UNRESOLVED_TYPE;
+		return VLexer.TYPE_PURE;
 	}
 
 	@Override

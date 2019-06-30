@@ -3,10 +3,10 @@ package com.xsjiong.vlexer;
 public class VXMLLexer extends VCommonLexer {
 	@Override
 	protected byte getNext() {
-		if (P == L) return TYPE_EOF;
+		if (P == L) return EOF;
 		ST = P;
 		if (S[P] == ' ' || S[P] == '\t') ReadSpaces();
-		if (P == L) return TYPE_EOF;
+		if (P == L) return EOF;
 		int q = P;
 		d:
 		if (D[DS[0]] == TYPE_CONTENT_START) {
@@ -69,7 +69,7 @@ public class VXMLLexer extends VCommonLexer {
 			case '"':
 				return processSymbol(S[P - 1]);
 		}
-		return UNRESOLVED_TYPE;
+		return TYPE_PURE;
 	}
 
 	@Override

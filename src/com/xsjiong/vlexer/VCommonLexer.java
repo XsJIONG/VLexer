@@ -5,10 +5,10 @@ public abstract class VCommonLexer extends VLexer {
 	}
 
 	protected byte getNext() {
-		if (P == L) return TYPE_EOF;
+		if (P == L) return EOF;
 		ST = P;
 		if (S[P] == ' ' || S[P] == '\t') ReadSpaces();
-		if (P == L) return TYPE_EOF;
+		if (P == L) return EOF;
 		if (isIdentifierStart(S[P])) {
 			int st = P;
 			ReadIdentifier();
@@ -172,17 +172,14 @@ public abstract class VCommonLexer extends VLexer {
 				return TYPE_ASSIGNMENT;
 			}
 			case '(':
-				return TYPE_LEFT_PARENTHESIS;
 			case ')':
-				return TYPE_RIGHT_PARENTHESIS;
+				return TYPE_PARENTHESIS;
 			case '[':
-				return TYPE_LEFT_SQUARE_BRACKET;
 			case ']':
-				return TYPE_RIGHT_SQUARE_BRACKET;
+				return TYPE_SQUARE_BRACKET;
 			case '{':
-				return TYPE_LEFT_BRACE;
 			case '}':
-				return TYPE_RIGHT_BRACE;
+				return TYPE_BRACE;
 			case ';':
 				return TYPE_SEMICOLON;
 			case ':':
@@ -190,7 +187,7 @@ public abstract class VCommonLexer extends VLexer {
 			case ',':
 				return TYPE_COMMA;
 		}
-		return UNRESOLVED_TYPE;
+		return TYPE_PURE;
 		// 还是不要抛出错误吧——要是用户从外面粘贴过来乱码你就崩溃了是几个意思?
 //		throw new RuntimeException();
 	}

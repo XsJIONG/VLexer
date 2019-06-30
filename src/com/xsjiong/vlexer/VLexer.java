@@ -5,10 +5,11 @@ import java.util.ArrayList;
 
 public abstract class VLexer {
 	public static final int EXPAND_SIZE = 128;
-	public static final int TOTAL_COUNT = 28;
-	public static final byte TYPE_CDATA = 27, TYPE_CONTENT = 26, TYPE_TAG_END = 25, TYPE_TAG_START = 24, TYPE_CONTENT_START = 23, TYPE_PREPROCESSOR_COMMAND = 22, UNRESOLVED_TYPE = 21, TYPE_EOF = 20, TYPE_IDENTIFIER = 0, TYPE_KEYWORD = 1, TYPE_NUMBER = 2, TYPE_COMMENT = 3, TYPE_STRING = 4, TYPE_CHAR = 5, TYPE_OPERATOR = 6, TYPE_BOOLEAN = 7, TYPE_ASSIGNMENT = 8,
-			TYPE_NULL = 9, TYPE_LEFT_PARENTHESIS = 10, TYPE_RIGHT_PARENTHESIS = 11, TYPE_LEFT_SQUARE_BRACKET = 12, TYPE_RIGHT_SQUARE_BRACKET = 13, TYPE_LEFT_BRACE = 14, TYPE_RIGHT_BRACE = 15, TYPE_SEMICOLON = 16,
-			TYPE_COLON = 17, TYPE_PERIOD = 18, TYPE_COMMA = 19, FAILED = -1;
+	public static final int TOTAL_COUNT = 24;
+	public static final byte TYPE_IDENTIFIER = 0, TYPE_KEYWORD = 1, TYPE_NUMBER = 2, TYPE_COMMENT = 3, TYPE_STRING = 4, TYPE_CHAR = 5, TYPE_OPERATOR = 6, TYPE_BOOLEAN = 7, TYPE_ASSIGNMENT = 8,
+			TYPE_NULL = 9, TYPE_PARENTHESIS = 10, TYPE_SQUARE_BRACKET = 11, TYPE_BRACE = 12, TYPE_SEMICOLON = 13, TYPE_COLON = 14, TYPE_PERIOD = 15, TYPE_COMMA = 16, TYPE_PURE = 17,
+			TYPE_PREPROCESSOR_COMMAND = 18, TYPE_TAG_START = 19, TYPE_TAG_END = 20, TYPE_CONTENT_START = 21, TYPE_CONTENT = 22, TYPE_CDATA = 23,
+			FAILED = -1, EOF = -2;
 
 	public char[] S;
 	public int P, ST;
@@ -98,19 +99,19 @@ public abstract class VLexer {
 		int i = 0;
 		while (true) {
 			type = getNext();
-			if (type == TYPE_EOF) break;
+			if (type == EOF) break;
 			if (++DS[0] == D.length)
 				expandDArray();
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
 			if (P == L) return;
+			if (i != afterLen) if (ST == afterDS[i] && type == afterD[i]) break;
 			if (i != afterLen && P >= afterDS[i]) {
 				do {
 					i++;
 				} while (i != afterLen && P >= afterDS[i]);
 				if (i != afterLen) i--;
 			}
-			if (i != afterLen) if (ST == afterDS[i] && type == afterD[i]) break;
 		}
 		if (afterLen != 0) {
 			int cplen = afterLen - i;
@@ -147,19 +148,19 @@ public abstract class VLexer {
 		byte type;
 		while (true) {
 			type = getNext();
-			if (type == TYPE_EOF) break;
+			if (type == EOF) break;
 			if (++DS[0] == D.length)
 				expandDArray();
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
 			if (P == L) return;
+			if (i != afterLen) if (ST == afterDS[i] && type == afterD[i]) break;
 			if (i != afterLen && P >= afterDS[i]) {
 				do {
 					i++;
 				} while (i != afterLen && P >= afterDS[i]);
 				if (i != afterLen) i--;
 			}
-			if (i != afterLen) if (ST == afterDS[i] && type == afterD[i]) break;
 		}
 		if (afterLen != 0) {
 			int cplen = afterLen - i;
@@ -249,7 +250,7 @@ public abstract class VLexer {
 		this.P = this.DS[0] = 0;
 		if (S == null) return;
 		byte type;
-		while ((type = getNext()) != TYPE_EOF) {
+		while ((type = getNext()) != EOF) {
 			if (++DS[0] == D.length) expandDArray();
 			D[DS[0]] = type;
 			DS[DS[0]] = ST;
